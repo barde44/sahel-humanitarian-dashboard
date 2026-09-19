@@ -30,7 +30,7 @@ def remove_duplicates(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     available_cols = [c for c in match_cols if c in df.columns]
 
     df_clean = df.copy()
-    df_clean["_dup_key"] = df_clean[available_cols].astype(str).agg("|".join, axis=1)
+    df_clean["_dup_key"] = df_clean[available_cols].fillna("").astype(str).agg("|".join, axis=1)
 
     duplicates = df_clean[df_clean.duplicated(subset="_dup_key", keep="first")]
     df_deduped = df_clean.drop_duplicates(subset="_dup_key", keep="first")
